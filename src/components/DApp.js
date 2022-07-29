@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap';
 import BscDapp from '@obsidians/bsc-dapp'
-import '../App.css'
 import abi from './coin.json'
 
 const message = 'Sign'

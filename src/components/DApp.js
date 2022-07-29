@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 import BscDapp from '@obsidians/bsc-dapp'
 import abi from './coin.json'
 
@@ -93,9 +94,19 @@ export default function DApp() {
         browserExtensionStatus = `${dapp.browserExtension.name} Detected. ${enabled ? 'Enabled.' : 'Not enabled'}`
         if (!enabled) {
             enableButton = (
-                <Button variant="primary" onClick={() => dapp.enableBrowserExtension()}>
-                    Enable {dapp.browserExtension.name}
-                </Button>
+                <Card className="text-center">
+                    <Card.Header>DAPP</Card.Header>
+                    <Card.Body>
+                        <Card.Title>Simple exemple</Card.Title>
+                        <Card.Text>
+                            Transfer, Sign and Contract Sender.
+                        </Card.Text>
+                        <Button variant="primary" onClick={() => dapp.enableBrowserExtension()}>
+                            Enable {dapp.browserExtension.name}
+                        </Button>
+                    </Card.Body>
+                    <Card.Footer className="text-muted">test only.</Card.Footer>
+                </Card>
             )
         }
     } else {
@@ -105,10 +116,15 @@ export default function DApp() {
     let accountInfo = null
     if (enabled && account) {
         accountInfo = (
-            <div>
-                Current account: <small><code>{account.address}</code></small>
-                <Button variant="primary" onClick={() => getBalanceAndHistory()}>Get Balance and History</Button>
-            </div>
+            <Card className="text-center">
+                <Card.Header>Current account: </Card.Header>
+                <Card.Body>
+                    <Card.Title><small><code>{account.address}</code></small></Card.Title>
+                    <Card.Text>
+                        <Button variant="primary" onClick={() => getBalanceAndHistory()}>Get Balance and History</Button>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
         )
     }
 
@@ -131,76 +147,89 @@ export default function DApp() {
 
     let signMessageButton = null
     if (enabled && network) {
-        signMessageButton = <div style={{ margin: '20px 0' }}>
-            <div>message: <small><code>{message}</code></small></div>
-            <div>signature: <small><code>{sig}</code></small></div>
-            {!sig && <Button variant="primary" type="Button" class="btn btn-primary" onClick={() => signMessage()}>Sign Message</Button>}
-        </div>
+        signMessageButton =
+            <Card className="text-center">
+                <Card.Header> message: <small><code>{message}</code></small></Card.Header>
+                <Card.Body>
+                    <Card.Title>signature: <small><code>{sig}</code></small></Card.Title>
+                    <Card.Text>
+                        {!sig && <Button variant="primary" type="Button" class="btn btn-primary" onClick={() => signMessage()}>Sign Message</Button>}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
     }
 
     let transferForm = null
     if (enabled && network) {
-        transferForm = <div style={{ margin: '20px 0' }}>
-            <div>
-                Transfer
-            </div>
-            to:
-            <input
-                value={transferInfo.to}
-                onChange={(e) => setTransferInfo({ ...transferInfo, to: e.target.value })}
-                placeholder="Transfer to"
-            />
-            <br />
-            amount:
-            <input
-                value={transferInfo.amount}
-                onChange={(e) => setTransferInfo({ ...transferInfo, amount: e.target.value })}
-                placeholder="Transfer amount"
-            />
-            <br />
-            <Button variant="primary" onClick={() => transfer(transferInfo.to, transferInfo.amount)}>Transfer</Button>
-            {
-                !!transferInfo.txHash &&
-                <div>{transferInfo.txHash}</div>
-            }
-        </div>
+        transferForm =
+            <Card className="text-center">
+                <Card.Header>Transfer</Card.Header>
+                <Card.Body>
+                    <Card.Title>BNB</Card.Title>
+                    <Card.Text>
+                        to:
+                        <input
+                            value={transferInfo.to}
+                            onChange={(e) => setTransferInfo({ ...transferInfo, to: e.target.value })}
+                            placeholder="Transfer to"
+                        />
+                        amount:
+                        <input
+                            value={transferInfo.amount}
+                            onChange={(e) => setTransferInfo({ ...transferInfo, amount: e.target.value })}
+                            placeholder="Transfer amount"
+                        />
+                        <Button variant="primary" onClick={() => transfer(transferInfo.to, transferInfo.amount)}>Transfer</Button>
+                    </Card.Text>
+                </Card.Body>
+                <Card.Footer className="text-muted"> {
+                    !!transferInfo.txHash &&
+                    <div> txHash:   {transferInfo.txHash}</div>
+                }</Card.Footer>
+            </Card>
     }
 
     let contractForm = null
     if (enabled && network) {
-        contractForm = <div style={{ margin: '20px 0' }}>
-            <div>
-                Contract
-            </div>
-            contract:
-            <input
-                value={contractInfo.address}
-                onChange={(e) => setContractInfo({ ...contractInfo, address: e.target.value })}
-                placeholder="Contract Address"
-            />
-            <br />
-            method: mint
-            <br />
-            param1 (receiver):
-            <input
-                value={contractInfo.receiver}
-                onChange={(e) => setContractInfo({ ...contractInfo, receiver: e.target.value })}
-                placeholder="Receiver"
-            />
-            <br />
-            param2 (amount):
-            <input
-                value={contractInfo.amount}
-                onChange={(e) => setContractInfo({ ...contractInfo, amount: e.target.value })}
-                placeholder="Amount"
-            />
-            <br />
-            <Button variant="primary" onClick={() => execute()}>Execute</Button>
-            {
-                !!contractInfo.txHash &&
-                <div>{contractInfo.txHash}</div>
-            }
-        </div>
+        contractForm =
+            <Card className="text-center">
+                <Card.Header>Mint Contract</Card.Header>
+                <Card.Body>
+                    <Card.Text>
+                        contract:
+                        <input
+                            value={contractInfo.address}
+                            onChange={(e) => setContractInfo({ ...contractInfo, address: e.target.value })}
+                            placeholder="Contract Address"
+                        />
+                        <br />
+                        <Card className="text-center">
+                            <Card.Header>method: mint</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    receiver:
+                                    <input
+                                        value={contractInfo.receiver}
+                                        onChange={(e) => setContractInfo({ ...contractInfo, receiver: e.target.value })}
+                                        placeholder="Receiver"
+                                    />
+                                    amount:
+                                    <input
+                                        value={contractInfo.amount}
+                                        onChange={(e) => setContractInfo({ ...contractInfo, amount: e.target.value })}
+                                        placeholder="Amount"
+                                    />
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <Button variant="primary" onClick={() => execute()}>Execute</Button>
+                    </Card.Text>
+                </Card.Body>
+                <Card.Footer className="text-muted">{
+                    !!contractInfo.txHash &&
+                    <div>txHash:    {contractInfo.txHash}</div>
+                }</Card.Footer>
+            </Card>
     }
 
     return (

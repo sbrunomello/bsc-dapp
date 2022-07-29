@@ -2,12 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
+import DApp from './components/DApp'
 import reportWebVitals from './reportWebVitals'
 
 setTimeout(() => {
   ReactDOM.render(
     <React.StrictMode>
-      <App />
+     
+      <DApp />
     </React.StrictMode>,
     document.getElementById('root')
   )
